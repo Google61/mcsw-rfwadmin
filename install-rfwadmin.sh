@@ -1,3 +1,4 @@
+#!/bin/bash
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
 sudo apt-get install tmux php5.6 openjdk-8-jre wget zip unzip && /etc/init.d/apache2 restart
