@@ -68,13 +68,25 @@ fi
 MANIFESTURL=https://piston-meta.mojang.com/mc/game/version_manifest.json
 #Configure a default server if no previous configuration exists
 if  [ $CONFIGURE_SERVER == "1" ]; then
-  LATEST_SERVER_VERSION=`wget --quiet -O - $MANIFESTURL |head -c 100|sed  's/^{"latest":{[^}]*"release":"\([^"]\+\)".\+$/\1/'`
-  PATTERN='^[0-9.]+$'
-  if [[ ! $LATEST_SERVER_VERSION =~ $PATTERN ]] ; then
-     error_exit "Failed to parse latest Minecraft server version from $MANIFESTURL"
-  fi
-  LATEST_SERVER_BINARY=minecraft_server.${LATEST_SERVER_VERSION}.jar
-  DOWNLOAD_URL="https://s3.amazonaws.com/Minecraft.Download/versions/${LATEST_SERVER_VERSION}/minecraft_server.${LATEST_SERVER_VERSION}.jar"
+  version_manifest_url="https://piston-meta.mojang.com/mc/game/version_manifest.json"
+  tmp="version_manifest.json"
+  curl -Ss -o "$tmp" "$version_manifest_url"
+  latest_version=$(jq .latest.release -r "$tmp")
+  latest_manifest_url=$(cat "$tmp" | jq -r ".versions[] | select(contains({type: \"release\", id: \"$latest_version\"})) | .url")
+  manifest="/tmp/manifest.$latest_version.json"
+  curl -Ss -o "$manifest" "$latest_manifest_url"
+  jar_url=$(jq -r ".downloads.server.url" "$manifest")
+
+  LATEST_SERVER_VERSION=$latest_version
+  DOWNLOAD_URL=$jar_url
+
+  #LATEST_SERVER_VERSION=`wget --quiet -O - $MANIFESTURL |head -c 100|sed  's/^{"latest":{[^}]*"release":"\([^"]\+\)".\+$/\1/'`
+  #PATTERN='^[0-9.]+$'
+  #if [[ ! $LATEST_SERVER_VERSION =~ $PATTERN ]] ; then
+  #   error_exit "Failed to parse latest Minecraft server version from $MANIFESTURL"
+  #fi
+  LATEST_SERVER_BINARY=server.jar
+  #DOWNLOAD_URL="https://s3.amazonaws.com/Minecraft.Download/versions/${LATEST_SERVER_VERSION}/minecraft_server.${LATEST_SERVER_VERSION}.jar"
   #If we are re-running the install script on the same day, no need to re-download the server
   if [ ! -f "fsroot/var/lib/minecraft/jars/serverjars/$LATEST_SERVER_BINARY" ]; then
     echo "Downloading latest minecraft server jar from Mojang."
