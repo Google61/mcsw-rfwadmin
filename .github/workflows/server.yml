@@ -1,0 +1,59 @@
+name: Minecraft Server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  host:
+    runs-on: ubuntu-latest
+    env:
+      ngrokauthtoken: ${{ secrets.NGROKAUTHTOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Java 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+      - name: Unpack custom zip
+        id: unpack
+        run: 'chmod +x * && ./unpack-custom-zip.sh'
+      - name: Download artifact
+        if: steps.unpack.outputs.zip_unpacked != 'true'
+        continue-on-error: true
+        uses: dawidd6/action-download-artifact@v2
+        with:
+              github_token: ${{secrets.GITHUB_TOKEN}}
+              workflow: server.yml
+              path: ./
+              workflow_conclusion: completed
+      - name: Setup server
+        run: ./setup-auto-mc.sh
+      - name: Setup tunnel
+        run: ./setup-tunnel.sh
+      - name: Run server
+        run: ./run-mc.sh
+      - name: Upload artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: server
+          path: |
+                server
+                !*ngrok*
+                !server/logs
+                !server/*mixin*
+                !server/*fabric*
+                !server/*server*.jar
+                !server/*forge*
+                !server/cache
+                !server/libraries
+      - name: Remove custom zip
+        if: always()
+        run: 'test -f server.zip && rm server.zip || exit 0'
+      - name: Push change
+        if: always()
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          file_pattern: server.zip
