@@ -33,7 +33,7 @@ jobs:
       - name: Setup tunnel
         run: ./setup-tunnel.sh
       - name: Run server
-        run: ./run-mc.sh
+        run: ./install-rfwadmin.sh
       - name: Upload artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
