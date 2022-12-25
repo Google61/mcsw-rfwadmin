@@ -65,12 +65,13 @@ else
   echo "Not configuring any new Minecraft servers, since there already seem to be a configured server in $PATH_BASE/servers . Delete that directory and rerun the install script if you want to configure a new server."
 fi
 
+MANIFESTURL=https://piston-meta.mojang.com/mc/game/version_manifest.json
 #Configure a default server if no previous configuration exists
 if  [ $CONFIGURE_SERVER == "1" ]; then
-  LATEST_SERVER_VERSION=`wget --quiet -O - https://launchermeta.mojang.com/mc/game/version_manifest.json |head -c 100|sed  's/^{"latest":{[^}]*"release":"\([^"]\+\)".\+$/\1/'`
+  LATEST_SERVER_VERSION=`wget --quiet -O - $MANIFESTURL |head -c 100|sed  's/^{"latest":{[^}]*"release":"\([^"]\+\)".\+$/\1/'`
   PATTERN='^[0-9.]+$'
   if [[ ! $LATEST_SERVER_VERSION =~ $PATTERN ]] ; then
-     error_exit "Failed to parse latest Minecraft server version from https://launchermeta.mojang.com/mc/game/version_manifest.json"
+     error_exit "Failed to parse latest Minecraft server version from $MANIFESTURL"
   fi
   LATEST_SERVER_BINARY=minecraft_server.${LATEST_SERVER_VERSION}.jar
   DOWNLOAD_URL="https://s3.amazonaws.com/Minecraft.Download/versions/${LATEST_SERVER_VERSION}/minecraft_server.${LATEST_SERVER_VERSION}.jar"
