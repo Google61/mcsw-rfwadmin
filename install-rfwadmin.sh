@@ -21,7 +21,7 @@ fi
 #rfwadmin runs as the web server user. If $WEBSERVER_USER is empty, this script will try to guess the web server user from the owner of the process currently using port 80
 WEBSERVER_USER=
 
-PATH_BASE="."
+PATH_BASE="/var/lib/minecraft"
 
 #Symlink /var/lib/minecraft/web and /var/lib/minecraft/minecraft.sh
 #back to fsroot . Useful for rfwadmin development if symlinking to a
@@ -65,7 +65,6 @@ else
   echo "Not configuring any new Minecraft servers, since there already seem to be a configured server in $PATH_BASE/servers . Delete that directory and rerun the install script if you want to configure a new server."
 fi
 
-MANIFESTURL=https://piston-meta.mojang.com/mc/game/version_manifest.json
 #Configure a default server if no previous configuration exists
 if  [ $CONFIGURE_SERVER == "1" ]; then
   version_manifest_url="https://piston-meta.mojang.com/mc/game/version_manifest.json"
