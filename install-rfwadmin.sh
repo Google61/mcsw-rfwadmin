@@ -18,7 +18,7 @@ fi
 #rfwadmin runs as the web server user. If $WEBSERVER_USER is empty, this script will try to guess the web server user from the owner of the process currently using port 80
 WEBSERVER_USER=
 
-PATH_BASE="/var/lib/minecraft"
+PATH_BASE="."
 
 #Symlink /var/lib/minecraft/web and /var/lib/minecraft/minecraft.sh
 #back to fsroot . Useful for rfwadmin development if symlinking to a
