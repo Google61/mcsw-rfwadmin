@@ -1,4 +1,6 @@
-sudo apt-get install tmux php5 openjdk-8-jre wget zip unzip && /etc/init.d/apache2 restart
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt-get install tmux php5.6 openjdk-8-jre wget zip unzip && /etc/init.d/apache2 restart
 git clone https://github.com/Thue/rfwadmin
 cd rfwadmin
 
