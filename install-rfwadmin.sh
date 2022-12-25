@@ -1,4 +1,4 @@
-sudo apt-get install tmux openjdk-7-jre libapache2-mod-php5 php5-curl wget zip unzip && /etc/init.d/apache2 restart
+sudo apt-get install tmux php5 openjdk-8-jre wget zip unzip && /etc/init.d/apache2 restart
 git clone https://github.com/Thue/rfwadmin
 cd rfwadmin
 
