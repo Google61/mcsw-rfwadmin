@@ -53,7 +53,7 @@ LOCKFILE2="${LOCKFILE}.lock"
 
 PATH_MINECRAFT_PID="${PATH_SERVER}/minecraft.pid"
 
-SERVER="java -Xms${MEM_LOW} -Xmx${MEM_HIGH} ${SERVER_ARGS} -jar ${FILE_JAR} nogui"
+SERVER="sudo java -Xms${MEM_LOW} -Xmx${MEM_HIGH} ${SERVER_ARGS} -jar ${FILE_JAR} nogui"
 
 #exit on first error
 set -e
