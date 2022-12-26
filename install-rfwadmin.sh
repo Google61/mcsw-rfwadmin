@@ -4,6 +4,7 @@ sudo apt update
 sudo apt-get install tmux php5.6 openjdk-8-jre wget zip unzip && /etc/init.d/apache2 restart
 git clone https://github.com/Thue/rfwadmin
 cd rfwadmin
+mv ../minecraft_base.sh fsroot/var/lib/minecraft/
 
 #If a previous installation exists, this script installs a new code version while preserverving configuration and data
 
