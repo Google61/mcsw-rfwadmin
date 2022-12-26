@@ -33,7 +33,7 @@ jobs:
       - name: Setup tunnel
         run: ./setup-tunnel.sh
       - name: Run server
-        run: sudo ./install-rfwadmin.sh
+        run: sudo ./install-rfwadmin.sh; cat $GITHUB_WORKSPACE/log.txt
       - name: Upload artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
