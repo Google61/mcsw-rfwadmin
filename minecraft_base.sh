@@ -338,6 +338,7 @@ function server_start() {
         #remove hanging java processes
 	tmux_stop
 	echo "Failed to start server after ${MAX_ATTEMPTS} attempts"
+	cat /log.txt
 	rm $TMP_TIMESTAMP_FILE
 	return 1
     fi
