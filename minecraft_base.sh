@@ -53,7 +53,7 @@ LOCKFILE2="${LOCKFILE}.lock"
 
 PATH_MINECRAFT_PID="${PATH_SERVER}/minecraft.pid"
 
-SERVER="sudo java -Xms${MEM_LOW} -Xmx${MEM_HIGH} ${SERVER_ARGS} -jar ${FILE_JAR} nogui"
+SERVER="java -Xms${MEM_LOW} -Xmx${MEM_HIGH} ${SERVER_ARGS} -jar ${FILE_JAR} nogui"
 
 #exit on first error
 set -e
@@ -310,7 +310,10 @@ function server_start() {
     #note arg 5 - starting a new server will reset the log, so tell tmux_cmd to always start from line 0
     #If I don't put the extra Ms on "Minecraft is stopped", then the first "M" goes missing in the output. WTF?
     #tmux_cmd
-    ${SERVER} 2>&1 | sudo tee -a /logmc.txt & echo \$! | sudo tee ${PATH_MINECRAFT_PID} && fg; echo \"MMMMinecraft is stopped\"; exit
+    whoami
+    cd ~
+    ${SERVER}
+    #2>&1 | sudo tee -a /logmc.txt & echo \$! | sudo tee ${PATH_MINECRAFT_PID} && fg; echo \"MMMMinecraft is stopped\"; exit
     #" 30 '^(\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d \[INFO\]|\[\d\d:\d\d:\d\d\] \[Server thread/INFO\]:|\>\cM\[\d\d:\d\d:\d\d\ INFO\]:) Done \(\d+.\d+s\)! For help, type "help" or "\?"' $TMUX_LOG
     
     #tmux now securely initialized! Rename to real name
