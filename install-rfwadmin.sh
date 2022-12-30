@@ -1,7 +1,8 @@
 #!/bin/bash
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
-sudo apt-get install tmux php5.6 openjdk-8-jre wget zip unzip && /etc/init.d/apache2 restart
+sudo apt-get install tmux php5.6 openjdk-17-jre wget zip unzip && /etc/init.d/apache2 restart
+sudo update-java-alternatives -s java-1.17.0-openjdk-amd64
 git clone https://github.com/Thue/rfwadmin
 cd rfwadmin
 mv ../minecraft_base.sh fsroot/var/lib/minecraft/
